@@ -42,4 +42,13 @@ cd post-test-probability-calculator
 start index.html
 ```
 
+To publish your copy with GitHub Pages:
+
+1. Push the repository to GitHub.
+2. Open the repository's **Settings** page and select **Pages**.
+3. Under **Build and deployment**, choose **Deploy from a branch**.
+4. Select the `main` branch and the `/ (root)` folder, then select **Save**.
+
+GitHub will publish the site at `https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/` after the Pages deployment completes. Because this is a static project, no build command is needed.
+
 The calculator runs entirely in the browser. It does not transmit or store user-entered data.
