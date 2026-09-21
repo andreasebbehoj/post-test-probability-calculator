@@ -12,7 +12,7 @@
   <main class="page-shell">
     <header class="site-header">
       <h1>Post-test probability calculator</h1>
-      <p class="subtitle">Explore how pre-test probability, sensitivity and specificity determine the probability of disease after a diagnostic test.<br>Appendix to the paper "Interpreting diagnostic test results - Why prior probabilities matter" (2026) by Dekkers O, Ebbehoj A and Groenwold R.</p>
+      <p class="subtitle">Explore how pre-test probability, test sensitivity and specificity determine the probability of disease after a test result.<br>Interactive companion to the paper “Interpreting diagnostic test results – Why prior probabilities matter” by Dekkers OM, Ebbehoj A and Groenwold RHH.</p>
     </header>
 
     <section class="calculator-panel" aria-labelledby="inputs-heading">
@@ -36,13 +36,13 @@
         </div>
 
         <div class="control-block control-block--prior">
-          <label for="prior-number">Pre-test probability (i.e. estimated prevalence of disease in tested population)</label>
+          <label for="prior-number">Pre-test probability</label>
           <div class="number-with-unit">
             <input id="prior-number" class="number-input" type="number" min="0" max="100" step="0.1" value="10" inputmode="decimal" aria-describedby="prior-error">
             <span>%</span>
           </div>
           <input id="prior-range" class="range-input" type="range" min="0" max="100" step="0.1" value="10" aria-label="Pre-test probability slider">
-          <p class="help-text">Estimated prevalence of disease in the tested population.</p>
+          <p class="help-text">Estimated probability of disease before testing. This may be informed by disease prevalence in a clinically similar population.</p>
           <p id="prior-error" class="error-message" role="alert"></p>
         </div>
 
@@ -52,7 +52,7 @@
             <span class="switch" aria-hidden="true"></span>
             <span>Use a range for pre-test probability</span>
           </label>
-          <p class="help-text">Because pre-test probability is often uncertain, a plausible range can show how that uncertainty affects the result.</p>
+          <p class="help-text">If the exact pre-test probability is uncertain, enter a plausible range to see how this uncertainty affects the post-test probability.</p>
           <div id="prior-range-fields" class="range-fields" hidden>
             <div class="range-field">
               <label for="prior-min">Minimum</label>
@@ -72,7 +72,7 @@
             <button type="button" class="segment-button is-selected" data-result="positive" aria-pressed="true">Positive</button>
             <button type="button" class="segment-button" data-result="negative" aria-pressed="false">Negative</button>
           </div>
-          <p class="help-text">Choose whether the diagnostic test is positive or negative</p>
+          <p class="help-text">Select the observed test result.</p>
         </fieldset>
         </div>
       </div>
@@ -97,7 +97,7 @@
       <details id="curve-details" hidden>
         <summary>Explore different pre-test probabilities</summary>
         <div class="details-content plot-content">
-          <p class="plot-intro">The curve shows how the selected test result changes post-test probability as the estimated pre-test probability varies.</p>
+          <p class="plot-intro">For the entered sensitivity and specificity, the curve shows how post-test probability changes across different pre-test probabilities.</p>
           <div class="chart-wrap"><svg id="probability-chart" viewBox="0 0 720 410" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">Post-test probability curve</title><desc id="chart-desc">A graph showing post-test probability by pre-test probability.</desc></svg></div>
         </div>
       </details>
@@ -113,13 +113,13 @@
 
     <aside class="interpretation-box">
       <p class="eyebrow">Interpretation</p>
-      <p>Sensitivity and specificity describe characteristics of a diagnostic test, but they do not by themselves determine the probability that an individual patient has the disease after testing. The post-test probability also depends on the estimated pre-test probability of disease.</p>
-      <p>Pre-test probability is often uncertain and should be interpreted as an estimate rather than an exact property of an individual patient.</p>
+      <p>Sensitivity and specificity describe how a diagnostic test performs among people with and without the disease. They do not, by themselves, tell us the probability that a patient has the disease after a test result. This post-test probability also depends on the estimated pre-test probability.</p>
+      <p>Pre-test probability is inherently uncertain. It may be informed by clinical characteristics, clinical experience, disease prevalence in comparable populations, or validated prediction models. When appropriate, a plausible range may better reflect this uncertainty than a single value.</p>
     </aside>
 
     <footer class="site-footer">
-      <p>This calculator is intended for educational and scientific purposes. It does not provide medical advice and does not determine whether a diagnostic test or treatment is appropriate for an individual patient. The validity of the result depends on the validity and applicability of the entered pre-test probability, sensitivity and specificity.</p>
-      <p class="footer-credit">Calculations happen entirely in your browser. No information is transmitted or stored.</p>
+      <p>This calculator is intended for educational and scientific purposes and does not provide medical advice. Results depend on the validity and applicability of the entered pre-test probability, sensitivity and specificity.</p>
+      <p class="footer-credit">All calculations are performed locally in your browser. No entered information is transmitted or stored.</p>
     </footer>
   </main>
 </body>
