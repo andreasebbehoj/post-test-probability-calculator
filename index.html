@@ -38,10 +38,10 @@
         <div class="control-block control-block--prior">
           <label for="prior-number">Pre-test probability (i.e. estimated prevalence of disease in tested population)</label>
           <div class="number-with-unit">
-            <input id="prior-number" class="number-input" type="number" min="0" max="100" step="0.1" value="5" inputmode="decimal" aria-describedby="prior-error">
+            <input id="prior-number" class="number-input" type="number" min="0" max="100" step="0.1" value="10" inputmode="decimal" aria-describedby="prior-error">
             <span>%</span>
           </div>
-          <input id="prior-range" class="range-input" type="range" min="0" max="100" step="0.1" value="5" aria-label="Pre-test probability slider">
+          <input id="prior-range" class="range-input" type="range" min="0" max="100" step="0.1" value="10" aria-label="Pre-test probability slider">
           <p class="help-text">Estimated prevalence of disease in the tested population.</p>
           <p id="prior-error" class="error-message" role="alert"></p>
         </div>
@@ -61,7 +61,7 @@
             <div class="range-arrow" aria-hidden="true">to</div>
             <div class="range-field">
               <label for="prior-max">Maximum</label>
-              <div class="number-with-unit"><input id="prior-max" class="number-input" type="number" min="0" max="100" step="0.1" value="10" inputmode="decimal"><span>%</span></div>
+              <div class="number-with-unit"><input id="prior-max" class="number-input" type="number" min="0" max="100" step="0.1" value="20" inputmode="decimal"><span>%</span></div>
             </div>
             <p id="range-error" class="error-message" role="alert"></p>
           </div>
