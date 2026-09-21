@@ -15,6 +15,8 @@
     resultError: document.querySelector('#result-error'),
     priorMarker: document.querySelector('#prior-marker'),
     posteriorMarker: document.querySelector('#posterior-marker'),
+    priorInterval: document.querySelector('#prior-interval'),
+    posteriorInterval: document.querySelector('#posterior-interval'),
     priorMarkerLabel: document.querySelector('#prior-marker-label'),
     posteriorMarkerLabel: document.querySelector('#posterior-marker-label'),
     curveDetails: document.querySelector('#curve-details'),
@@ -81,6 +83,12 @@
     marker.style.left = `${clamp(value * 100)}%`;
   }
 
+  function setInterval(interval, low, high) {
+    interval.hidden = false;
+    interval.style.left = `${clamp(low * 100)}%`;
+    interval.style.width = `${Math.max(0, (high - low) * 100)}%`;
+  }
+
   function formulaMarkup(sensitivity, specificity, prior) {
     const priorText = percent(prior, 1);
     const sensitivityText = percent(sensitivity, 1);
@@ -114,7 +122,7 @@
     const result = posterior(prior, sensitivity, specificity, state.result);
     const relevant = state.result === 'positive' ? 'positive test' : 'negative test';
     const cell = (label, value) => `<span class="frequency-cell-label">${label}</span><span class="frequency-cell-value">${displayNumber(value)}</span>`;
-    return `<p class="frequency-lead">Imagine 1,000 patients similar to this patient. These are expected numbers, not observed counts.</p><table class="frequency-table"><thead><tr><th></th><th>Test positive</th><th>Test negative</th></tr></thead><tbody><tr><th scope="row">Disease</th><td>${cell('True positive', truePositive)}</td><td>${cell('False negative', falseNegative)}</td></tr><tr><th scope="row">No disease</th><td>${cell('False positive', falsePositive)}</td><td>${cell('True negative', trueNegative)}</td></tr></tbody></table><p class="frequency-conclusion">Among all patients with a ${relevant}, <strong>${displayNumber(diseaseAfter)} out of ${displayNumber(totalAfter)}</strong> would be expected to have the disease. This corresponds to a post-test probability of <strong>${percent(result, 1)}</strong>.</p>`;
+    return `<p class="frequency-lead">Imagine 1,000 patients similar to this patient. These are expected numbers, not observed counts.</p><table class="frequency-table"><thead><tr><th></th><th>Test positive</th><th>Test negative</th><th>Total</th></tr></thead><tbody><tr><th scope="row">Disease</th><td>${cell('True positive', truePositive)}</td><td>${cell('False negative', falseNegative)}</td><td>${cell('All disease', disease)}</td></tr><tr><th scope="row">No disease</th><td>${cell('False positive', falsePositive)}</td><td>${cell('True negative', trueNegative)}</td><td>${cell('All no disease', noDisease)}</td></tr></tbody><tfoot><tr><th scope="row">Total</th><td>${cell('All positive', positiveCount)}</td><td>${cell('All negative', negativeCount)}</td><td>${cell('All patients', disease + noDisease)}</td></tr></tfoot></table><p class="frequency-conclusion">Among all patients with a ${relevant}, <strong>${displayNumber(diseaseAfter)} out of ${displayNumber(totalAfter)}</strong> would be expected to have the disease. This corresponds to a post-test probability of <strong>${percent(result, 1)}</strong>.</p>`;
   }
 
   function drawChart(data) {
@@ -148,6 +156,9 @@
     elements.priorSlider.disabled = elements.rangeToggle.checked;
     elements.priorNumber.disabled = elements.rangeToggle.checked;
     if (!data.valid) {
+      document.querySelector('.scale-track').classList.remove('is-range');
+      elements.priorInterval.hidden = true;
+      elements.posteriorInterval.hidden = true;
       elements.resultValue.textContent = '—';
       elements.resultContext.textContent = 'Enter valid values to calculate a result.';
       elements.resultError.textContent = 'The result cannot be calculated until the inputs are valid.';
@@ -160,6 +171,9 @@
     const high = posterior(data.priorMax, data.sensitivity, data.specificity, state.result);
     const selected = posterior((data.priorMin + data.priorMax) / 2, data.sensitivity, data.specificity, state.result);
     if (low === null || high === null || selected === null) {
+      document.querySelector('.scale-track').classList.remove('is-range');
+      elements.priorInterval.hidden = true;
+      elements.posteriorInterval.hidden = true;
       elements.resultValue.textContent = '—';
       elements.resultContext.textContent = 'These inputs produce a mathematically undefined result.';
       elements.resultError.textContent = 'The calculation is undefined for this combination of inputs.';
@@ -170,6 +184,14 @@
     elements.resultContext.textContent = isRange ? `With this ${state.result} test, the post-test probability spans ${percent(low, 1)} to ${percent(high, 1)} across the selected prior range.` : `After a ${state.result} test, the probability of disease is ${percent(selected, 1)}.`;
     setMarker(elements.priorMarker, (data.priorMin + data.priorMax) / 2);
     setMarker(elements.posteriorMarker, selected);
+    const scaleTrack = document.querySelector('.scale-track');
+    scaleTrack.classList.toggle('is-range', isRange);
+    elements.priorInterval.hidden = !isRange;
+    elements.posteriorInterval.hidden = !isRange;
+    if (isRange) {
+      setInterval(elements.priorInterval, data.priorMin, data.priorMax);
+      setInterval(elements.posteriorInterval, low, high);
+    }
     elements.priorMarkerLabel.textContent = isRange ? `${percent(data.priorMin, 1)}–${percent(data.priorMax, 1)}` : percent(data.priorMin, 1);
     elements.posteriorMarkerLabel.textContent = isRange ? `${percent(low, 1)}–${percent(high, 1)}` : percent(selected, 1);
     elements.frequencyContent.innerHTML = frequencyMarkup((data.priorMin + data.priorMax) / 2, data.sensitivity, data.specificity);

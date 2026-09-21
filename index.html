@@ -23,21 +23,21 @@
       <div class="input-card">
         <div class="input-grid">
         <div class="control-block">
-          <label for="sensitivity">Test sensitivity <span class="example-label">example value</span></label>
+          <label for="sensitivity">Test sensitivity</label>
           <div class="number-with-unit"><input id="sensitivity" class="number-input" type="number" min="0" max="100" step="0.1" value="94" inputmode="decimal"><span>%</span></div>
           <p class="help-text">Among patients with disease, the proportion with a positive test.</p>
           <p id="sensitivity-error" class="error-message" role="alert"></p>
         </div>
 
         <div class="control-block">
-          <label for="specificity">Test specificity <span class="example-label">example value</span></label>
+          <label for="specificity">Test specificity</label>
           <div class="number-with-unit"><input id="specificity" class="number-input" type="number" min="0" max="100" step="0.1" value="96" inputmode="decimal"><span>%</span></div>
           <p class="help-text">Among patients without disease, the proportion with a negative test.</p>
           <p id="specificity-error" class="error-message" role="alert"></p>
         </div>
 
         <div class="control-block control-block--prior">
-          <label for="prior-number">Pre-test probability (i.e. estimated prevalence of disease in tested population) <span class="example-label">example starts at 5%</span></label>
+          <label for="prior-number">Pre-test probability (i.e. estimated prevalence of disease in tested population)</label>
           <div class="number-with-unit">
             <input id="prior-number" class="number-input" type="number" min="0" max="100" step="0.1" value="5" inputmode="decimal" aria-describedby="prior-error">
             <span>%</span>
@@ -87,7 +87,7 @@
         <p id="result-error" class="error-message" role="alert"></p>
       </div>
       <div class="probability-scale" aria-label="Probability scale from 0 to 100 percent">
-        <div class="scale-track"><span id="prior-marker" class="scale-marker scale-marker--prior" title="Pre-test probability"><span id="prior-marker-label" class="scale-marker-label">5.0%</span></span><span id="posterior-marker" class="scale-marker scale-marker--posterior" title="Post-test probability"><span id="posterior-marker-label" class="scale-marker-label">55.3%</span></span></div>
+        <div class="scale-track"><span id="prior-interval" class="scale-interval scale-interval--prior" hidden></span><span id="posterior-interval" class="scale-interval scale-interval--posterior" hidden></span><span id="prior-marker" class="scale-marker scale-marker--prior" title="Pre-test probability"><span id="prior-marker-label" class="scale-marker-label">5.0%</span></span><span id="posterior-marker" class="scale-marker scale-marker--posterior" title="Post-test probability"><span id="posterior-marker-label" class="scale-marker-label">55.3%</span></span></div>
         <div class="scale-labels"><span>0%</span><span>100%</span></div>
         <div class="scale-legend"><span><i class="legend-dot legend-dot--prior"></i> Pre-test</span><span><i class="legend-dot legend-dot--posterior"></i> Post-test</span></div>
       </div>
@@ -98,11 +98,11 @@
         <summary>See how this works</summary>
         <div class="details-content" id="frequency-content"></div>
       </details>
-      <details id="curve-details" hidden>
+      <details>
         <summary>Show calculation</summary>
         <div class="details-content formula-content" id="formula-content"></div>
       </details>
-      <details>
+      <details id="curve-details" hidden>
         <summary>Explore different pre-test probabilities</summary>
         <div class="details-content plot-content">
           <p class="plot-intro">The curve shows how the selected test result changes post-test probability as the estimated pre-test probability varies.</p>

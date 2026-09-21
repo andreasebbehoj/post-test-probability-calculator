@@ -34,13 +34,15 @@ h2 { margin-bottom: 0; font-family: var(--font-display); font-size: 1.65rem; fon
 .control-block { min-width: 0; }
 .control-block > label, .control-block legend, .range-field > label { display: block; margin-bottom: .55rem; color: var(--ink); font-size: .92rem; font-weight: 700; }
 .control-block legend { padding: 0; }
-.example-label { color: var(--accent); font-size: .7rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
 .number-with-unit { display: flex; align-items: center; width: 100%; border-bottom: 2px solid var(--ink); }
 .number-with-unit:focus-within { border-color: var(--accent); }
+.number-with-unit:has(.number-input:disabled) { border-color: #aeb9bd; }
 .number-input { width: 100%; min-width: 0; padding: .25rem 0 .45rem; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 1.45rem; }
+.number-input:disabled { color: #7d898e; cursor: not-allowed; }
 .number-input::-webkit-inner-spin-button, .number-input::-webkit-outer-spin-button { opacity: 1; }
 .number-with-unit > span { padding-bottom: .45rem; color: var(--muted); font-size: 1rem; }
 .range-input { width: 100%; margin: 1.15rem 0 .1rem; accent-color: var(--accent); }
+.range-input:disabled { opacity: .55; cursor: not-allowed; }
 .help-text { margin: .55rem 0 0; color: var(--muted); font-size: .78rem; }
 .error-message { min-height: 1.25rem; margin: .35rem 0 0; color: var(--error); font-size: .78rem; }
 .range-mode { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
@@ -70,6 +72,10 @@ h2 { margin-bottom: 0; font-family: var(--font-display); font-size: 1.65rem; fon
 .scale-marker--prior::after { background: var(--prior); }
 .scale-marker--posterior::after { background: var(--accent); }
 .scale-marker-label { position: absolute; bottom: 1rem; left: 0; color: currentColor; font-size: .78rem; font-weight: 700; line-height: 1; white-space: nowrap; transform: translateX(-50%); }
+.scale-interval { position: absolute; z-index: 1; top: 50%; height: .9rem; border: 2px solid; transform: translateY(-50%); }
+.scale-interval--prior { border-color: var(--prior); background: rgb(191 107 54 / 35%); }
+.scale-interval--posterior { border-color: var(--accent); background: rgb(11 105 115 / 35%); }
+.scale-track.is-range .scale-marker { display: none; }
 .scale-labels, .scale-legend { display: flex; justify-content: space-between; color: var(--muted); font-size: .75rem; }
 .scale-legend { justify-content: flex-start; gap: 1.2rem; margin-top: .8rem; }
 .legend-dot { display: inline-block; width: .65rem; height: .65rem; margin-right: .25rem; border-radius: 50%; }
@@ -85,8 +91,9 @@ summary::marker { color: var(--accent); }
 .frequency-table th, .frequency-table td { padding: .6rem .7rem; border-bottom: 1px solid var(--line); text-align: left; }
 .frequency-table th { color: var(--muted); font-size: .75rem; font-weight: 700; text-transform: uppercase; }
 .frequency-table th:not(:first-child), .frequency-table td:not(:first-child) { text-align: center; }
-.frequency-table td { width: 34%; }
-.frequency-table td:first-child { width: 32%; font-weight: 700; }
+.frequency-table td, .frequency-table th { width: 25%; }
+.frequency-table tbody th { font-weight: 700; text-align: left; }
+.frequency-table tfoot th, .frequency-table tfoot td { border-top: 2px solid var(--line); font-weight: 700; }
 .frequency-cell-label { display: block; color: var(--muted); font-size: .72rem; font-weight: 400; }
 .frequency-cell-value { display: block; margin-top: .15rem; font-size: 1.05rem; }
 .frequency-conclusion { max-width: 680px; margin: 1.2rem 0 0; }
