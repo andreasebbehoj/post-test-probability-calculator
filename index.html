@@ -95,6 +95,13 @@
     </section>
 
     <section class="details-section">
+      <details id="curve-details" hidden>
+        <summary>Explore different pre-test probabilities</summary>
+        <div class="details-content plot-content">
+          <p class="plot-intro">The curve shows how the selected test result changes post-test probability as the estimated pre-test probability varies.</p>
+          <div class="chart-wrap"><svg id="probability-chart" viewBox="0 0 720 410" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">Post-test probability curve</title><desc id="chart-desc">A graph showing post-test probability by pre-test probability.</desc></svg></div>
+        </div>
+      </details>
       <details open>
         <summary>See how this works</summary>
         <div class="details-content" id="frequency-content"></div>
@@ -102,13 +109,6 @@
       <details>
         <summary>Show calculation</summary>
         <div class="details-content formula-content" id="formula-content"></div>
-      </details>
-      <details id="curve-details" hidden>
-        <summary>Explore different pre-test probabilities</summary>
-        <div class="details-content plot-content">
-          <p class="plot-intro">The curve shows how the selected test result changes post-test probability as the estimated pre-test probability varies.</p>
-          <div class="chart-wrap"><svg id="probability-chart" viewBox="0 0 720 410" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">Post-test probability curve</title><desc id="chart-desc">A graph showing post-test probability by pre-test probability.</desc></svg></div>
-        </div>
       </details>
     </section>
 

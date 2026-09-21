@@ -109,7 +109,7 @@
     return `<p>${introduction}</p><div class="formula"><div class="formula-line"><strong>${title}</strong> = ${symbolic}</div><div class="formula-line">= ${substituted}</div><div class="formula-line formula-result">= ${percent(posterior(prior, sensitivity, specificity, state.result), 1)}</div></div>`;
   }
 
-  function frequencyMarkup(prior, sensitivity, specificity) {
+  function frequencyMarkup(prior, sensitivity, specificity, isRange) {
     const disease = prior * 1000;
     const noDisease = (1 - prior) * 1000;
     const truePositive = disease * sensitivity;
@@ -123,7 +123,8 @@
     const result = posterior(prior, sensitivity, specificity, state.result);
     const relevant = state.result === 'positive' ? 'positive test' : 'negative test';
     const cell = (label, value) => `<span class="frequency-cell-label">${label}</span><span class="frequency-cell-value">${displayNumber(value)}</span>`;
-    return `<p class="frequency-lead">Imagine 1,000 patients similar to this patient. These are expected numbers, not observed counts.</p><table class="frequency-table"><thead><tr><th></th><th>Test positive</th><th>Test negative</th><th>Total</th></tr></thead><tbody><tr><th scope="row">Disease</th><td>${cell('True positive', truePositive)}</td><td>${cell('False negative', falseNegative)}</td><td>${cell('All disease', disease)}</td></tr><tr><th scope="row">No disease</th><td>${cell('False positive', falsePositive)}</td><td>${cell('True negative', trueNegative)}</td><td>${cell('All no disease', noDisease)}</td></tr></tbody><tfoot><tr><th scope="row">Total</th><td>${cell('All positive', positiveCount)}</td><td>${cell('All negative', negativeCount)}</td><td>${cell('All patients', disease + noDisease)}</td></tr></tfoot></table><p class="frequency-conclusion">Among all patients with a ${relevant}, <strong>${displayNumber(diseaseAfter)} out of ${displayNumber(totalAfter)}</strong> would be expected to have the disease. This corresponds to a post-test probability of <strong>${percent(result, 1)}</strong>.</p>`;
+    const lead = isRange ? `Imagine 1,000 patients similar to this patient. These are expected numbers based on the minimum pre-test probability of ${percent(prior, 1)}.` : 'Imagine 1,000 patients similar to this patient. These are expected numbers, not observed counts.';
+    return `<p class="frequency-lead">${lead}</p><table class="frequency-table"><thead><tr><th></th><th>Test positive</th><th>Test negative</th><th>Total</th></tr></thead><tbody><tr><th scope="row">Disease</th><td>${cell('True positive', truePositive)}</td><td>${cell('False negative', falseNegative)}</td><td>${cell('All disease', disease)}</td></tr><tr><th scope="row">No disease</th><td>${cell('False positive', falsePositive)}</td><td>${cell('True negative', trueNegative)}</td><td>${cell('All no disease', noDisease)}</td></tr></tbody><tfoot><tr><th scope="row">Total</th><td>${cell('All positive', positiveCount)}</td><td>${cell('All negative', negativeCount)}</td><td>${cell('All patients', disease + noDisease)}</td></tr></tfoot></table><p class="frequency-conclusion">Among all patients with a ${relevant}, <strong>${displayNumber(diseaseAfter)} out of ${displayNumber(totalAfter)}</strong> would be expected to have the disease. This corresponds to a post-test probability of <strong>${percent(result, 1)}</strong>.</p>`;
   }
 
   function drawChart(data) {
@@ -160,6 +161,7 @@
   function update() {
     elements.rangeFields.hidden = !elements.rangeToggle.checked;
     elements.curveDetails.hidden = !elements.rangeToggle.checked;
+    elements.curveDetails.open = elements.rangeToggle.checked;
     const data = readState();
     elements.priorSlider.value = String((data.priorMin ?? Number(elements.priorNumber.value) / 100) * 100);
     elements.priorSlider.disabled = elements.rangeToggle.checked;
@@ -203,7 +205,7 @@
     }
     elements.priorMarkerLabel.textContent = isRange ? `${percent(data.priorMin, 1)}–${percent(data.priorMax, 1)}` : percent(data.priorMin, 1);
     elements.posteriorMarkerLabel.textContent = isRange ? `${percent(low, 1)}–${percent(high, 1)}` : percent(selected, 1);
-    elements.frequencyContent.innerHTML = frequencyMarkup((data.priorMin + data.priorMax) / 2, data.sensitivity, data.specificity);
+    elements.frequencyContent.innerHTML = frequencyMarkup(data.priorMin, data.sensitivity, data.specificity, isRange);
     elements.formulaContent.innerHTML = formulaMarkup(data.sensitivity, data.specificity, data.priorMin, isRange);
     updateChart(data.sensitivity, data.specificity, data.priorMin, data.priorMax);
   }
