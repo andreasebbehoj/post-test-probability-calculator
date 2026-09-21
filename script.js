@@ -89,7 +89,7 @@
     interval.style.width = `${Math.max(0, (high - low) * 100)}%`;
   }
 
-  function formulaMarkup(sensitivity, specificity, prior) {
+  function formulaMarkup(sensitivity, specificity, prior, isRange) {
     const priorText = percent(prior, 1);
     const sensitivityText = percent(sensitivity, 1);
     const specificityText = percent(specificity, 1);
@@ -105,7 +105,8 @@
     const substituted = positive
       ? `<span class="fraction"><span class="top">${sensitivityText} &times; ${priorText}</span><span class="bottom">${sensitivityText} &times; ${priorText} + ${falseRate} &times; ${percent(1 - prior, 1)}</span></span>`
       : `<span class="fraction"><span class="top">${missRate} &times; ${priorText}</span><span class="bottom">${missRate} &times; ${priorText} + ${specificityText} &times; ${percent(1 - prior, 1)}</span></span>`;
-    return `<p>For this ${positive ? 'positive' : 'negative'} test:</p><div class="formula"><div class="formula-line"><strong>${title}</strong> = ${symbolic}</div><div class="formula-line">= ${substituted}</div><div class="formula-line formula-result">= ${percent(posterior(prior, sensitivity, specificity, state.result), 1)}</div></div>`;
+    const introduction = isRange ? `For this ${positive ? 'positive' : 'negative'} test and the minimum prior probability of ${priorText}:` : `For this ${positive ? 'positive' : 'negative'} test:`;
+    return `<p>${introduction}</p><div class="formula"><div class="formula-line"><strong>${title}</strong> = ${symbolic}</div><div class="formula-line">= ${substituted}</div><div class="formula-line formula-result">= ${percent(posterior(prior, sensitivity, specificity, state.result), 1)}</div></div>`;
   }
 
   function frequencyMarkup(prior, sensitivity, specificity) {
@@ -133,9 +134,15 @@
     const path = data.points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${x(point.prior).toFixed(2)} ${y(point.post).toFixed(2)}`).join(' ');
     const grid = [0, .25, .5, .75, 1].map((tick) => `<line class="chart-grid" x1="${plot.left}" y1="${y(tick)}" x2="${plot.left + plot.width}" y2="${y(tick)}"/><line class="chart-grid" x1="${x(tick)}" y1="${plot.top}" x2="${x(tick)}" y2="${plot.top + plot.height}"/>`).join('');
     const labels = [0, 25, 50, 75, 100].map((tick) => `<text class="chart-label" x="${x(tick / 100)}" y="${plot.top + plot.height + 25}" text-anchor="middle">${tick}%</text><text class="chart-label" x="${plot.left - 12}" y="${y(tick / 100) + 4}" text-anchor="end">${tick}%</text>`).join('');
-    const range = data.range ? `<rect class="chart-range" x="${x(data.range[0])}" y="${plot.top}" width="${Math.max(1, x(data.range[1]) - x(data.range[0]))}" height="${plot.height}"/>` : '';
-    const marker = `<circle class="chart-marker" cx="${x(data.selectedPrior)}" cy="${y(data.selectedPost)}" r="6"><title>Selected: ${percent(data.selectedPrior, 1)} pre-test, ${percent(data.selectedPost, 1)} post-test</title></circle>`;
-    svg.innerHTML = `<title id="chart-title">Post-test probability curve</title><desc id="chart-desc">The curve maps pre-test probability to post-test probability for the selected test result.</desc>${grid}${range}<line class="chart-axis" x1="${plot.left}" y1="${plot.top + plot.height}" x2="${plot.left + plot.width}" y2="${plot.top + plot.height}"/><line class="chart-axis" x1="${plot.left}" y1="${plot.top}" x2="${plot.left}" y2="${plot.top + plot.height}"/><path class="chart-curve" d="${path}"/>${marker}${labels}<text class="chart-axis-label" x="${plot.left + plot.width / 2}" y="${plot.top + plot.height + 51}" text-anchor="middle">Pre-test probability</text><text class="chart-axis-label" x="16" y="${plot.top + plot.height / 2}" transform="rotate(-90 16 ${plot.top + plot.height / 2})" text-anchor="middle">Post-test probability</text>`;
+    const priorRange = data.range ? `<rect class="chart-prior-range" x="${x(data.range[0])}" y="${plot.top}" width="${Math.max(1, x(data.range[1]) - x(data.range[0]))}" height="${plot.height}"/>` : '';
+    const posteriorRange = data.postRange ? `<rect class="chart-posterior-range" x="${plot.left}" y="${y(data.postRange[1])}" width="${plot.width}" height="${Math.max(1, y(data.postRange[0]) - y(data.postRange[1]))}"/>` : '';
+    const marker = data.range ? '' : `<circle class="chart-marker" cx="${x(data.selectedPrior)}" cy="${y(data.selectedPost)}" r="6"><title>Selected: ${percent(data.selectedPrior, 1)} pre-test, ${percent(data.selectedPost, 1)} post-test</title></circle>`;
+    const selectedPriorLabel = data.range ? `${percent(data.range[0], 1)}–${percent(data.range[1], 1)}` : percent(data.selectedPrior, 1);
+    const selectedPostLabel = data.postRange ? `${percent(data.postRange[0], 1)}–${percent(data.postRange[1], 1)}` : percent(data.selectedPost, 1);
+    const selectedX = x(data.range ? (data.range[0] + data.range[1]) / 2 : data.selectedPrior);
+    const selectedY = data.postRange ? y((data.postRange[0] + data.postRange[1]) / 2) : y(data.selectedPost);
+    const annotations = `<text class="chart-selected-label" x="${selectedX}" y="${plot.top + plot.height + 25}" text-anchor="middle">${selectedPriorLabel}</text><text class="chart-value-label" x="${Math.min(plot.left + plot.width - 6, x(data.range ? data.range[1] : data.selectedPrior) + 10)}" y="${Math.max(plot.top + 14, selectedY - 8)}">${selectedPostLabel}</text>`;
+    svg.innerHTML = `<title id="chart-title">Post-test probability curve</title><desc id="chart-desc">The curve maps pre-test probability to post-test probability for the selected test result.</desc>${grid}${priorRange}${posteriorRange}<line class="chart-axis" x1="${plot.left}" y1="${plot.top + plot.height}" x2="${plot.left + plot.width}" y2="${plot.top + plot.height}"/><line class="chart-axis" x1="${plot.left}" y1="${plot.top}" x2="${plot.left}" y2="${plot.top + plot.height}"/><path class="chart-curve" d="${path}"/>${marker}${labels}${annotations}<text class="chart-axis-label" x="${plot.left + plot.width / 2}" y="${plot.top + plot.height + 51}" text-anchor="middle">Pre-test probability</text><text class="chart-axis-label" x="16" y="${plot.top + plot.height / 2}" transform="rotate(-90 16 ${plot.top + plot.height / 2})" text-anchor="middle">Post-test probability</text>`;
   }
 
   function updateChart(sensitivity, specificity, priorMin, priorMax) {
@@ -145,7 +152,9 @@
     }).filter((point) => point.post !== null);
     const selectedPrior = (priorMin + priorMax) / 2;
     const selectedPost = posterior(selectedPrior, sensitivity, specificity, state.result);
-    drawChart({ points, selectedPrior, selectedPost, range: elements.rangeToggle.checked ? [priorMin, priorMax] : null });
+    const postMin = posterior(priorMin, sensitivity, specificity, state.result);
+    const postMax = posterior(priorMax, sensitivity, specificity, state.result);
+    drawChart({ points, selectedPrior, selectedPost, range: elements.rangeToggle.checked ? [priorMin, priorMax] : null, postRange: elements.rangeToggle.checked ? [Math.min(postMin, postMax), Math.max(postMin, postMax)] : null });
   }
 
   function update() {
@@ -195,7 +204,7 @@
     elements.priorMarkerLabel.textContent = isRange ? `${percent(data.priorMin, 1)}–${percent(data.priorMax, 1)}` : percent(data.priorMin, 1);
     elements.posteriorMarkerLabel.textContent = isRange ? `${percent(low, 1)}–${percent(high, 1)}` : percent(selected, 1);
     elements.frequencyContent.innerHTML = frequencyMarkup((data.priorMin + data.priorMax) / 2, data.sensitivity, data.specificity);
-    elements.formulaContent.innerHTML = formulaMarkup(data.sensitivity, data.specificity, (data.priorMin + data.priorMax) / 2);
+    elements.formulaContent.innerHTML = formulaMarkup(data.sensitivity, data.specificity, data.priorMin, isRange);
     updateChart(data.sensitivity, data.specificity, data.priorMin, data.priorMax);
   }
 

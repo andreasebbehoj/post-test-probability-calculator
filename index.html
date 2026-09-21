@@ -43,18 +43,10 @@
             <span>%</span>
           </div>
           <input id="prior-range" class="range-input" type="range" min="0" max="100" step="0.1" value="5" aria-label="Pre-test probability slider">
+          <p class="help-text">Estimated prevalence of disease in the tested population.</p>
           <p id="prior-error" class="error-message" role="alert"></p>
         </div>
 
-        <fieldset class="control-block result-control">
-          <legend>Test result</legend>
-          <div class="segmented-control" role="group" aria-label="Test result">
-            <button type="button" class="segment-button is-selected" data-result="positive" aria-pressed="true">Positive</button>
-            <button type="button" class="segment-button" data-result="negative" aria-pressed="false">Negative</button>
-          </div>
-          <p class="help-text">Choose the result being interpreted.</p>
-        </fieldset>
-        </div>
         <div class="range-mode">
           <label class="switch-label" for="range-toggle">
             <input id="range-toggle" type="checkbox">
@@ -74,6 +66,15 @@
             </div>
             <p id="range-error" class="error-message" role="alert"></p>
           </div>
+        </div>
+        <fieldset class="control-block result-control">
+          <legend>Test result</legend>
+          <div class="segmented-control" role="group" aria-label="Test result">
+            <button type="button" class="segment-button is-selected" data-result="positive" aria-pressed="true">Positive</button>
+            <button type="button" class="segment-button" data-result="negative" aria-pressed="false">Negative</button>
+          </div>
+          <p class="help-text">Choose whether the diagnostic test is positive or negative</p>
+        </fieldset>
         </div>
       </div>
     </section>
@@ -106,7 +107,7 @@
         <summary>Explore different pre-test probabilities</summary>
         <div class="details-content plot-content">
           <p class="plot-intro">The curve shows how the selected test result changes post-test probability as the estimated pre-test probability varies.</p>
-          <div class="chart-wrap"><svg id="probability-chart" viewBox="0 0 720 390" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">Post-test probability curve</title><desc id="chart-desc">A graph showing post-test probability by pre-test probability.</desc></svg></div>
+          <div class="chart-wrap"><svg id="probability-chart" viewBox="0 0 720 410" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">Post-test probability curve</title><desc id="chart-desc">A graph showing post-test probability by pre-test probability.</desc></svg></div>
         </div>
       </details>
     </section>
