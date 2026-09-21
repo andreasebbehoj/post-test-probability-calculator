@@ -18,53 +18,32 @@
 
     <section class="calculator-panel" aria-labelledby="inputs-heading">
       <div class="section-heading">
-        <p class="eyebrow">Inputs</p>
-        <h2 id="inputs-heading">Set the diagnostic scenario</h2>
+        <h2 id="inputs-heading">Define diagnostic scenario</h2>
       </div>
       <div class="input-card">
         <div class="input-grid">
-        <div class="control-block control-block--prior">
-          <label for="prior-number">Pre-test probability <span class="example-label">example starts at 5%</span></label>
-          <div class="number-with-unit">
-            <input id="prior-number" class="number-input" type="number" min="0" max="100" step="0.1" value="5" inputmode="decimal" aria-describedby="prior-error">
-            <span>%</span>
-          </div>
-          <input id="prior-range" class="range-input" type="range" min="0" max="100" step="0.1" value="5" aria-label="Pre-test probability slider">
-          <p id="prior-error" class="error-message" role="alert"></p>
-          <div class="range-mode">
-            <label class="switch-label" for="range-toggle">
-              <input id="range-toggle" type="checkbox">
-              <span class="switch" aria-hidden="true"></span>
-              <span>Use a range for pre-test probability</span>
-            </label>
-            <p class="help-text">Because pre-test probability is often uncertain, a plausible range can show how that uncertainty affects the result.</p>
-            <div id="prior-range-fields" class="range-fields" hidden>
-              <div class="range-field">
-                <label for="prior-min">Minimum</label>
-                <div class="number-with-unit"><input id="prior-min" class="number-input" type="number" min="0" max="100" step="0.1" value="5" inputmode="decimal"><span>%</span></div>
-              </div>
-              <div class="range-arrow" aria-hidden="true">to</div>
-              <div class="range-field">
-                <label for="prior-max">Maximum</label>
-                <div class="number-with-unit"><input id="prior-max" class="number-input" type="number" min="0" max="100" step="0.1" value="10" inputmode="decimal"><span>%</span></div>
-              </div>
-              <p id="range-error" class="error-message" role="alert"></p>
-            </div>
-          </div>
-        </div>
-
         <div class="control-block">
-          <label for="sensitivity">Sensitivity <span class="example-label">example value</span></label>
+          <label for="sensitivity">Test sensitivity <span class="example-label">example value</span></label>
           <div class="number-with-unit"><input id="sensitivity" class="number-input" type="number" min="0" max="100" step="0.1" value="94" inputmode="decimal"><span>%</span></div>
           <p class="help-text">Among patients with disease, the proportion with a positive test.</p>
           <p id="sensitivity-error" class="error-message" role="alert"></p>
         </div>
 
         <div class="control-block">
-          <label for="specificity">Specificity <span class="example-label">example value</span></label>
+          <label for="specificity">Test specificity <span class="example-label">example value</span></label>
           <div class="number-with-unit"><input id="specificity" class="number-input" type="number" min="0" max="100" step="0.1" value="96" inputmode="decimal"><span>%</span></div>
           <p class="help-text">Among patients without disease, the proportion with a negative test.</p>
           <p id="specificity-error" class="error-message" role="alert"></p>
+        </div>
+
+        <div class="control-block control-block--prior">
+          <label for="prior-number">Pre-test probability (i.e. estimated prevalence of disease in tested population) <span class="example-label">example starts at 5%</span></label>
+          <div class="number-with-unit">
+            <input id="prior-number" class="number-input" type="number" min="0" max="100" step="0.1" value="5" inputmode="decimal" aria-describedby="prior-error">
+            <span>%</span>
+          </div>
+          <input id="prior-range" class="range-input" type="range" min="0" max="100" step="0.1" value="5" aria-label="Pre-test probability slider">
+          <p id="prior-error" class="error-message" role="alert"></p>
         </div>
 
         <fieldset class="control-block result-control">
@@ -75,6 +54,26 @@
           </div>
           <p class="help-text">Choose the result being interpreted.</p>
         </fieldset>
+        </div>
+        <div class="range-mode">
+          <label class="switch-label" for="range-toggle">
+            <input id="range-toggle" type="checkbox">
+            <span class="switch" aria-hidden="true"></span>
+            <span>Use a range for pre-test probability</span>
+          </label>
+          <p class="help-text">Because pre-test probability is often uncertain, a plausible range can show how that uncertainty affects the result.</p>
+          <div id="prior-range-fields" class="range-fields" hidden>
+            <div class="range-field">
+              <label for="prior-min">Minimum</label>
+              <div class="number-with-unit"><input id="prior-min" class="number-input" type="number" min="0" max="100" step="0.1" value="5" inputmode="decimal"><span>%</span></div>
+            </div>
+            <div class="range-arrow" aria-hidden="true">to</div>
+            <div class="range-field">
+              <label for="prior-max">Maximum</label>
+              <div class="number-with-unit"><input id="prior-max" class="number-input" type="number" min="0" max="100" step="0.1" value="10" inputmode="decimal"><span>%</span></div>
+            </div>
+            <p id="range-error" class="error-message" role="alert"></p>
+          </div>
         </div>
       </div>
     </section>
