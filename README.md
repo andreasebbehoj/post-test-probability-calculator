@@ -1,6 +1,10 @@
 # Post-test Probability Calculator
 
-A self-contained educational calculator accompanying a scientific manuscript about diagnostic test interpretation. It demonstrates how pre-test probability, sensitivity, specificity, and test result combine to determine post-test probability.
+This calculator is an appendix to the paper "Interpreting diagnostic test results - Why prior probabilities matter" (2026) by Dekkers O, Ebbehoj A and Groenwold R.
+
+Working calculator: https://andreasebbehoj.github.io/post-test-probability-calculator/
+
+It is an educational calculator accompanying the paper and does not provide medical advice. It demonstrates how pre-test probability, sensitivity, specificity, and test result combine to determine post-test probability.
 
 ## Features
 
@@ -28,28 +32,14 @@ The implementation uses probabilities from 0 to 1 internally and presents percen
 
 Open `index.html` directly in a browser. No build step, package manager, or server is required.
 
-## GitHub Pages
+## Publishing the repository yourself
 
-The intended repository is `https://github.com/andreasebbehoj/post-test-probability-calculator`. GitHub Pages can deploy the root of the `main` branch because the project is static HTML, CSS, and JavaScript.
-
-Expected public URL:
-
-`https://andreasebbehoj.github.io/post-test-probability-calculator/`
-
-### Manual publication
-
-If the repository does not yet exist, create an empty public repository named `post-test-probability-calculator` under the `andreasebbehoj` GitHub account. Then run these commands from this project directory:
+To create a working copy, copy the repository to your computer and open `index.html` in a browser. The project is intentionally self-contained: no package manager, build step, backend, or external dependency is required.
 
 ```powershell
-git init -b main
-git add index.html styles.css script.js README.md LICENSE
-git commit -m "Create post-test probability calculator"
-git remote add origin https://github.com/andreasebbehoj/post-test-probability-calculator.git
-git push -u origin main
+git clone https://github.com/andreasebbehoj/post-test-probability-calculator.git
+cd post-test-probability-calculator
+start index.html
 ```
 
-In GitHub, open **Settings > Pages**, choose **Deploy from a branch**, select `main` and `/ (root)`, and press **Save**. The site will then be available at the expected URL above after GitHub finishes the workflow.
-
-## Project status
-
-Educational calculator accompanying a scientific manuscript. It is supplementary material and does not provide medical advice.
+The calculator runs entirely in the browser. It does not transmit or store user-entered data.
