@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A transparent educational calculator for post-test probability.">
+  <title>Post-test Probability Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="page-shell">
+    <header class="site-header">
+      <p class="eyebrow">Diagnostic reasoning tool</p>
+      <h1>Post-test probability calculator</h1>
+      <p class="subtitle">Explore how pre-test probability, sensitivity and specificity determine the probability of disease after a diagnostic test.</p>
+    </header>
+
+    <section class="calculator-panel" aria-labelledby="inputs-heading">
+      <div class="section-heading">
+        <p class="eyebrow">Inputs</p>
+        <h2 id="inputs-heading">Set the diagnostic scenario</h2>
+      </div>
+      <div class="input-grid">
+        <div class="control-block control-block--prior">
+          <label for="prior-number">Pre-test probability <span class="example-label">example starts at 5%</span></label>
+          <div class="number-with-unit">
+            <input id="prior-number" class="number-input" type="number" min="0" max="100" step="0.1" value="5" inputmode="decimal" aria-describedby="prior-error">
+            <span>%</span>
+          </div>
+          <input id="prior-range" class="range-input" type="range" min="0" max="100" step="0.1" value="5" aria-label="Pre-test probability slider">
+          <p id="prior-error" class="error-message" role="alert"></p>
+          <div class="range-mode">
+            <label class="switch-label" for="range-toggle">
+              <input id="range-toggle" type="checkbox">
+              <span class="switch" aria-hidden="true"></span>
+              <span>Use a range for pre-test probability</span>
+            </label>
+            <p class="help-text">Because pre-test probability is often uncertain, a plausible range can show how that uncertainty affects the result.</p>
+            <div id="prior-range-fields" class="range-fields" hidden>
+              <div class="range-field">
+                <label for="prior-min">Minimum</label>
+                <div class="number-with-unit"><input id="prior-min" class="number-input" type="number" min="0" max="100" step="0.1" value="5" inputmode="decimal"><span>%</span></div>
+              </div>
+              <div class="range-arrow" aria-hidden="true">to</div>
+              <div class="range-field">
+                <label for="prior-max">Maximum</label>
+                <div class="number-with-unit"><input id="prior-max" class="number-input" type="number" min="0" max="100" step="0.1" value="10" inputmode="decimal"><span>%</span></div>
+              </div>
+              <p id="range-error" class="error-message" role="alert"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-block">
+          <label for="sensitivity">Sensitivity <span class="example-label">example value</span></label>
+          <div class="number-with-unit"><input id="sensitivity" class="number-input" type="number" min="0" max="100" step="0.1" value="94" inputmode="decimal"><span>%</span></div>
+          <p class="help-text">Among patients with disease, the proportion with a positive test.</p>
+          <p id="sensitivity-error" class="error-message" role="alert"></p>
+        </div>
+
+        <div class="control-block">
+          <label for="specificity">Specificity <span class="example-label">example value</span></label>
+          <div class="number-with-unit"><input id="specificity" class="number-input" type="number" min="0" max="100" step="0.1" value="96" inputmode="decimal"><span>%</span></div>
+          <p class="help-text">Among patients without disease, the proportion with a negative test.</p>
+          <p id="specificity-error" class="error-message" role="alert"></p>
+        </div>
+
+        <fieldset class="control-block result-control">
+          <legend>Test result</legend>
+          <div class="segmented-control" role="group" aria-label="Test result">
+            <button type="button" class="segment-button is-selected" data-result="positive" aria-pressed="true">Positive</button>
+            <button type="button" class="segment-button" data-result="negative" aria-pressed="false">Negative</button>
+          </div>
+          <p class="help-text">Choose the result being interpreted.</p>
+        </fieldset>
+      </div>
+    </section>
+
+    <section class="result-panel" aria-labelledby="result-heading" aria-live="polite">
+      <div class="result-copy">
+        <p class="eyebrow">Result</p>
+        <h2 id="result-heading">Post-test probability</h2>
+        <div id="result-value" class="result-value">55.3%</div>
+        <p id="result-context" class="result-context">After a positive test, the probability of disease is 55.3%.</p>
+        <p id="result-error" class="error-message" role="alert"></p>
+      </div>
+      <div class="transformation" aria-label="Probability transformation">
+        <div><span>Pre-test probability</span><strong id="transform-prior">5%</strong></div>
+        <div class="transform-arrow" aria-hidden="true">↓ <span id="transform-test">Positive test</span></div>
+        <div><span>Post-test probability</span><strong id="transform-posterior">55.3%</strong></div>
+      </div>
+      <div class="probability-scale" aria-label="Probability scale from 0 to 100 percent">
+        <div class="scale-track"><span id="prior-marker" class="scale-marker scale-marker--prior" title="Pre-test probability"></span><span id="posterior-marker" class="scale-marker scale-marker--posterior" title="Post-test probability"></span></div>
+        <div class="scale-labels"><span>0%</span><span>100%</span></div>
+        <div class="scale-legend"><span><i class="legend-dot legend-dot--prior"></i> Pre-test</span><span><i class="legend-dot legend-dot--posterior"></i> Post-test</span></div>
+      </div>
+    </section>
+
+    <section class="details-section">
+      <details open>
+        <summary>See how this works</summary>
+        <div class="details-content" id="frequency-content"></div>
+      </details>
+      <details>
+        <summary>Show calculation</summary>
+        <div class="details-content formula-content" id="formula-content"></div>
+      </details>
+      <details>
+        <summary>Explore different pre-test probabilities</summary>
+        <div class="details-content plot-content">
+          <p class="plot-intro">The curve shows how the selected test result changes post-test probability as the estimated pre-test probability varies.</p>
+          <div class="chart-wrap"><svg id="probability-chart" viewBox="0 0 720 390" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">Post-test probability curve</title><desc id="chart-desc">A graph showing post-test probability by pre-test probability.</desc></svg></div>
+        </div>
+      </details>
+    </section>
+
+    <aside class="interpretation-box">
+      <p class="eyebrow">Interpretation</p>
+      <p>Sensitivity and specificity describe characteristics of a diagnostic test, but they do not by themselves determine the probability that an individual patient has the disease after testing. The post-test probability also depends on the estimated pre-test probability of disease.</p>
+      <p>Pre-test probability is often uncertain and should be interpreted as an estimate rather than an exact property of an individual patient.</p>
+    </aside>
+
+    <footer class="site-footer">
+      <p>This calculator is intended for educational and scientific purposes. It does not provide medical advice and does not determine whether a diagnostic test or treatment is appropriate for an individual patient. The validity of the result depends on the validity and applicability of the entered pre-test probability, sensitivity and specificity.</p>
+      <p class="footer-credit">Calculations happen entirely in your browser. No information is transmitted or stored.</p>
+    </footer>
+  </main>
+</body>
+</html>
