@@ -21,7 +21,8 @@
         <p class="eyebrow">Inputs</p>
         <h2 id="inputs-heading">Set the diagnostic scenario</h2>
       </div>
-      <div class="input-grid">
+      <div class="input-card">
+        <div class="input-grid">
         <div class="control-block control-block--prior">
           <label for="prior-number">Pre-test probability <span class="example-label">example starts at 5%</span></label>
           <div class="number-with-unit">
@@ -74,6 +75,7 @@
           </div>
           <p class="help-text">Choose the result being interpreted.</p>
         </fieldset>
+        </div>
       </div>
     </section>
 
@@ -85,13 +87,8 @@
         <p id="result-context" class="result-context">After a positive test, the probability of disease is 55.3%.</p>
         <p id="result-error" class="error-message" role="alert"></p>
       </div>
-      <div class="transformation" aria-label="Probability transformation">
-        <div><span>Pre-test probability</span><strong id="transform-prior">5%</strong></div>
-        <div class="transform-arrow" aria-hidden="true">↓ <span id="transform-test">Positive test</span></div>
-        <div><span>Post-test probability</span><strong id="transform-posterior">55.3%</strong></div>
-      </div>
       <div class="probability-scale" aria-label="Probability scale from 0 to 100 percent">
-        <div class="scale-track"><span id="prior-marker" class="scale-marker scale-marker--prior" title="Pre-test probability"></span><span id="posterior-marker" class="scale-marker scale-marker--posterior" title="Post-test probability"></span></div>
+        <div class="scale-track"><span id="prior-marker" class="scale-marker scale-marker--prior" title="Pre-test probability"><span id="prior-marker-label" class="scale-marker-label">5.0%</span></span><span id="posterior-marker" class="scale-marker scale-marker--posterior" title="Post-test probability"><span id="posterior-marker-label" class="scale-marker-label">55.3%</span></span></div>
         <div class="scale-labels"><span>0%</span><span>100%</span></div>
         <div class="scale-legend"><span><i class="legend-dot legend-dot--prior"></i> Pre-test</span><span><i class="legend-dot legend-dot--posterior"></i> Post-test</span></div>
       </div>
@@ -102,7 +99,7 @@
         <summary>See how this works</summary>
         <div class="details-content" id="frequency-content"></div>
       </details>
-      <details>
+      <details id="curve-details" hidden>
         <summary>Show calculation</summary>
         <div class="details-content formula-content" id="formula-content"></div>
       </details>

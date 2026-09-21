@@ -14,6 +14,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--font-sans); line-height: 1.5; }
 button, input { font: inherit; }
@@ -27,6 +28,7 @@ h2 { margin-bottom: 0; font-family: var(--font-display); font-size: 1.65rem; fon
 .subtitle { max-width: 640px; margin-bottom: 0; color: var(--muted); font-size: 1.08rem; }
 .calculator-panel, .result-panel, .details-section, .interpretation-box { border-top: 1px solid var(--line); }
 .calculator-panel { padding: 1.75rem 0 2.2rem; }
+.input-card { padding: 1.5rem; border: 1px solid var(--line); background: var(--panel); }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
 .input-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 2rem; }
 .control-block { min-width: 0; }
@@ -55,21 +57,19 @@ h2 { margin-bottom: 0; font-family: var(--font-display); font-size: 1.65rem; fon
 .segment-button { padding: .65rem .8rem; border: 0; color: var(--muted); background: transparent; font-weight: 700; }
 .segment-button.is-selected { color: white; background: var(--accent); }
 .segment-button:focus-visible { position: relative; z-index: 1; outline: 3px solid #8cc7cc; outline-offset: 2px; }
-.result-panel { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(230px, .9fr); gap: 2rem; padding: 2.5rem 0 2.75rem; }
+.result-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding: 2.5rem 0 2.75rem; }
 .result-value { margin: .45rem 0 .55rem; color: var(--accent-dark); font-family: var(--font-display); font-size: clamp(3.6rem, 10vw, 6.7rem); font-weight: 400; letter-spacing: 0; line-height: .95; }
 .result-context { max-width: 430px; margin-bottom: 0; color: var(--muted); }
-.transformation { align-self: center; padding-left: 1.5rem; border-left: 1px solid var(--line); }
-.transformation > div:not(.transform-arrow) { display: flex; justify-content: space-between; gap: 1rem; padding: .55rem 0; }
-.transformation span { color: var(--muted); font-size: .83rem; }
-.transformation strong { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; }
-.transform-arrow { padding: .45rem 0; color: var(--accent); font-size: 1.5rem; line-height: 1; }
-.transform-arrow span { margin-left: .45rem; font-size: .78rem; font-weight: 700; vertical-align: middle; }
-.probability-scale { grid-column: 1 / -1; padding-top: .5rem; }
-.scale-track { position: relative; height: .45rem; margin: 1.3rem 0 .55rem; background: #cad5d6; }
+.probability-scale { padding: 2.2rem .25rem .5rem; }
+.scale-track { position: relative; height: .45rem; margin: 2.6rem 0 .55rem; background: #cad5d6; }
 .scale-track::after { position: absolute; inset: 0; background: var(--accent); content: ""; opacity: .18; }
-.scale-marker { position: absolute; z-index: 1; top: 50%; width: 1rem; height: 1rem; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 0 1px currentColor; }
-.scale-marker--prior { color: var(--prior); background: var(--prior); }
-.scale-marker--posterior { color: var(--accent); background: var(--accent); }
+.scale-marker { position: absolute; z-index: 1; top: 50%; width: 0; height: 0; transform: translate(-50%, -50%); }
+.scale-marker::after { position: absolute; top: -.5rem; left: -.5rem; width: 1rem; height: 1rem; border: 2px solid white; border-radius: 50%; content: ""; box-shadow: 0 0 0 1px currentColor; }
+.scale-marker--prior { color: var(--prior); }
+.scale-marker--posterior { color: var(--accent); }
+.scale-marker--prior::after { background: var(--prior); }
+.scale-marker--posterior::after { background: var(--accent); }
+.scale-marker-label { position: absolute; bottom: 1rem; left: 0; color: currentColor; font-size: .78rem; font-weight: 700; line-height: 1; white-space: nowrap; transform: translateX(-50%); }
 .scale-labels, .scale-legend { display: flex; justify-content: space-between; color: var(--muted); font-size: .75rem; }
 .scale-legend { justify-content: flex-start; gap: 1.2rem; margin-top: .8rem; }
 .legend-dot { display: inline-block; width: .65rem; height: .65rem; margin-right: .25rem; border-radius: 50%; }
@@ -84,7 +84,11 @@ summary::marker { color: var(--accent); }
 .frequency-table { width: 100%; max-width: 680px; border-collapse: collapse; font-size: .9rem; }
 .frequency-table th, .frequency-table td { padding: .6rem .7rem; border-bottom: 1px solid var(--line); text-align: left; }
 .frequency-table th { color: var(--muted); font-size: .75rem; font-weight: 700; text-transform: uppercase; }
-.frequency-table td:last-child, .frequency-table th:last-child { text-align: right; }
+.frequency-table th:not(:first-child), .frequency-table td:not(:first-child) { text-align: center; }
+.frequency-table td { width: 34%; }
+.frequency-table td:first-child { width: 32%; font-weight: 700; }
+.frequency-cell-label { display: block; color: var(--muted); font-size: .72rem; font-weight: 400; }
+.frequency-cell-value { display: block; margin-top: .15rem; font-size: 1.05rem; }
 .frequency-conclusion { max-width: 680px; margin: 1.2rem 0 0; }
 .formula { max-width: 720px; padding: 1rem; background: #edf3f3; overflow-x: auto; font-family: Georgia, serif; font-size: 1.05rem; }
 .formula-line { margin: .35rem 0; white-space: nowrap; }
@@ -111,11 +115,11 @@ summary::marker { color: var(--accent); }
 
 @media (max-width: 680px) {
   .page-shell { width: min(100% - 1.25rem, 980px); padding-top: 2.1rem; }
+  .input-card { padding: 1rem; }
   .input-grid, .result-panel { grid-template-columns: 1fr; gap: 1.3rem; }
   .section-heading { display: block; }
   .result-panel { padding: 2rem 0 2.25rem; }
-  .transformation { padding: 1rem 0 0; border-top: 1px solid var(--line); border-left: 0; }
-  .probability-scale { grid-column: auto; }
+  .probability-scale { padding-right: 0; padding-left: 0; }
   .details-content { padding-left: .2rem; }
   .frequency-table { font-size: .82rem; }
   .frequency-table th, .frequency-table td { padding: .55rem .35rem; }
